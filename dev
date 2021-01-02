@@ -26,8 +26,8 @@ error() {
 }
 
 require_in_docker() {
-    if [[ ! $IN_DOCKER = 1 ]]; then
-        error "This command can only be ran inside the running Misago docker container."
+    if [[ ! $IN_BACKEND_DOCKER = 1 ]]; then
+        error "This command can only be ran inside the running backend docker container."
         exit 1
     fi
 }
@@ -44,8 +44,10 @@ wait_for_db() {
     done
 }
 
+
 # Check if user has docker-compose
-if [[ ! $IN_DOCKER = 1 ]]; then
+if [[ ! "${@:2}" == "inside_container" ]]; then #2nd arg added when calling this script fom inside a container
+  if [[ ! $IN_DOCKER = 1 ]]; then
     if ! command -v docker-compose >/dev/null 2>&1; then
         error "You need to have Docker installed to use this tool."
         echo
@@ -54,6 +56,7 @@ if [[ ! $IN_DOCKER = 1 ]]; then
         echo
         exit 1
     fi
+  fi
 fi
 
 # Commands
@@ -123,11 +126,16 @@ init() {
     
     docker-compose stop
     docker-compose build --pull --force-rm "${@:2}"
-    docker-compose run --rm misago ./dev init_in_docker
+    
+    # only if we are running commands in the backend container
+    docker-compose run --rm backend ./dev init_in_docker inside_container
+
+    # docker-compose up
 }
 
 # Initialization step that has to occur inside docker
 init_in_docker() {
+    # echo "init_in_docker was called"
     require_in_docker
     wait_for_db
     # migrate the database
@@ -149,6 +157,7 @@ after_init_message() {
     echo "    docker-compose up"
     echo
     echo "Running server will be available in the browser under the http://127.0.0.1:${port_django} address."
+    # echo "Running development server is now available in the browser under the http://127.0.0.1:${port_django} address."
     echo
     echo "Default superuser has been created with this username and password:"
     echo
@@ -157,9 +166,9 @@ after_init_message() {
     echo
     echo "To connect to development database use following credentials:"
     echo
-    echo "User:         misago"
-    echo "Password:     misago"
-    echo "Database:     misago"
+    echo "User:         django"
+    echo "Password:     django"
+    echo "Database:     django"
     echo "Host:         postgres"
     echo "Port:         5432"
     echo
@@ -180,8 +189,10 @@ clear() {
     if [[ $confirmation = "y" ]]; then
         docker-compose stop
         docker-compose down --remove-orphans
-        find $devproject_path/media -mindepth 1 ! -name '.gitignore' -delete
-        find $devproject_path/userdata -mindepth 1 ! -name '.gitignore' -delete
+
+        # eventually will use this after media & userdata files are done 
+        # find $devproject_path/media -mindepth 1 ! -name '.gitignore' -delete
+        # find $devproject_path/userdata -mindepth 1 ! -name '.gitignore' -delete
     else
         echo "Operation canceled."
     fi

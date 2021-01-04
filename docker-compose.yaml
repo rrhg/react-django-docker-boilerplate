@@ -1,5 +1,22 @@
 version: "3.0"
 services:
+  frontend:
+    # where to find Dockerfile
+    build: ./frontend/
+    command: npm start
+    ports:
+      # Map port 3000 in the container to port 3000 on the host
+      # This way we can access create-react-app through http://localhost:3000
+      - "3000:3000"
+    tty: true
+    volumes:
+      # Map in the entire /frontend folder into the container
+      # This makes sure files in the container updates on the fly as we were working locally
+      - ./frontend:/frontend:Z
+      # allow to call ./dev init_in_docker (bash script) from inside container
+      - ./dev:/frontend/dev:Z
+    
+
   postgres:
     image: postgres:10
     restart: unless-stopped
@@ -32,17 +49,17 @@ services:
       - SUPERUSER_PASSWORD=password
     ports:
       # Map port 8000 in the container to port 8000 on the host
-      # This way we can access the forum through http://localhost:8000
+      # This way we can access Django through http://localhost:8000
       - "8000:8000"
     depends_on:
       - postgres
     #   - redis
     tty: true
     volumes:
-      # Map in the entire project into the container
+      # Map in the entire /backend folder into the container
       # This makes sure files in the container updates on the fly as we were working locally
       - ./backend:/backend:Z
-      # allow to call ./dev init_in_docker from inside container
+      # allow to call ./dev init_in_docker (bash script) from inside container
       - ./dev:/backend/dev:Z
 #   celery:
     # build: .

@@ -180,24 +180,24 @@ after_init_message() {
 
 # Clear existing dev project
 clear() {
-    echo -e "${RED}Warning:${NORMAL} You are going to delete media files created during development and destroy docker containers."
-    echo
+    # echo -e "${RED}Warning:${NORMAL} You are going to delete media files created during development and destroy docker containers."
+    # echo
 
-    devproject_path="$(pwd)/devproject"
+    # devproject_path="$(pwd)/devproject"
 
-    echo "Enter \"y\" to confirm:"
+    # echo "Enter \"y\" to confirm:"
 
-    read confirmation
-    if [[ $confirmation = "y" ]]; then
+    # read confirmation
+    # if [[ $confirmation = "y" ]]; then
         docker-compose stop
         docker-compose down --remove-orphans
 
         # eventually will use this after media & userdata files are done 
         # find $devproject_path/media -mindepth 1 ! -name '.gitignore' -delete
         # find $devproject_path/userdata -mindepth 1 ! -name '.gitignore' -delete
-    else
-        echo "Operation canceled."
-    fi
+    # else
+        # echo "Operation canceled."
+    # fi
 }
 
 # Rebuild docker containers

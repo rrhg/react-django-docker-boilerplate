@@ -25,7 +25,7 @@ services:
       - POSTGRES_PASSWORD=django
       - POSTGRES_DB=django
       - POSTGRES_HOST=postgres
-      - POSTGRES_TEST_DB=dd_test
+      - POSTGRES_TEST_DB=django_test
       # Superuser
       - SUPERUSER_USERNAME=Admin
       - SUPERUSER_EMAIL=admin@example.com
@@ -49,11 +49,11 @@ services:
     # command: celery -A devproject worker --loglevel=info
     # environment:
     #   # Postgres
-    #   - POSTGRES_USER=misago
-    #   - POSTGRES_PASSWORD=misago
-    #   - POSTGRES_DB=misago
+    #   - POSTGRES_USER=django
+    #   - POSTGRES_PASSWORD=django
+    #   - POSTGRES_DB=django
     #   - POSTGRES_HOST=postgres
-    #   - POSTGRES_TEST_DB=misago_test
+    #   - POSTGRES_TEST_DB=django_test
     # depends_on:
     #   - postgres
     #   - redis
@@ -61,10 +61,11 @@ services:
     # volumes:
     #   # Map in the entire project into the container
     #   # This makes sure files in the container updates on the fly as we were working locally
-    #   - .:/srv/misago:Z
+    #   - .:/backend:Z
 
 # fix for: ERROR: could not find an available, non-overlapping IPv4 address pool among the defaults to assign to the network
 # happens sometimes when your laptop vpn services use same addresses as docker network
+# if this creates any type of error, just comment out everything. It will still work with the default network & default id addresses
 networks:
     default:
         driver: bridge

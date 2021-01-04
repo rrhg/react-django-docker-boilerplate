@@ -90,8 +90,8 @@ intro() {
     echo "Shortcuts:"
     echo
     echo "    ${BOLD}manage.py${NORMAL}         runs \"python manage.py\" inside docker."
-    echo "    ${BOLD}bash${NORMAL}              starts bash session inside running Misago container."
-    echo "    ${BOLD}run${NORMAL}               runs \"docker-compose run --rm misago\"."
+    echo "    ${BOLD}bash${NORMAL}              starts bash session inside running backend container."
+    echo "    ${BOLD}run${NORMAL}               runs \"docker-compose run --rm backend\"."
     echo "    ${BOLD}psql${NORMAL}              runs psql connected to development database."
     echo "    ${BOLD}pyfmt${NORMAL}             runs isort + black on python code."
     echo "    ${BOLD}fakedata${NORMAL}          populates database with testing data."
@@ -132,6 +132,8 @@ init() {
 
     # docker-compose up
 }
+
+
 
 # Initialization step that has to occur inside docker
 init_in_docker() {
@@ -206,69 +208,27 @@ rebuild() {
 
 # Run tests suite
 test() {
-    docker-compose run --rm misago pytest "${@:2}"
-}
-
-# Make messages
-makemessages() {
-    docker-compose run --rm --no-deps misago ./dev makemessages_in_docker $1
-}
-
-# Docker part of makemessages
-makemessages_in_docker() {
-    require_in_docker
-    
-    echo "Extracting messages for $1 language:"
-    cd ./misago
-
-    echo "Processing .py and .html files..."
-    django-admin.py makemessages -l $1 -e html,txt,py > /dev/null
-
-    echo "Processing .js files..."
-    django-admin.py makemessages -l $1 -d djangojs > /dev/null
-}
-
-# Compile messages
-compilemessages() {
-    docker-compose run --rm --no-deps misago ./dev compilemessages_in_docker
-}
-
-# Docker part of compile messages
-compilemessages_in_docker() {
-    require_in_docker
-    cd ./misago
-    django-admin.py compilemessages
-}
-
-# Pull translation files from transifex
-txpull() {
-    tx pull -a
-    compilemessages
-}
-
-# Push translation sources to transifex
-txpush() {
-    tx push --source
+    docker-compose run --rm backend pytest "${@:2}"
 }
 
 # Shortcut for starting bash session in running container
 run_bash() {
-    docker exec -it misago_misago_1 bash
+    docker exec -it backend_backend_1 bash
 }
 
-# Shortcut for docker-compose run --rm misago python manage.py
+# Shortcut for docker-compose run --rm backend python manage.py
 run_managepy() {
-    docker-compose run --rm misago python manage.py "${@:2}"
+    docker-compose run --rm backend python manage.py "${@:2}"
 }
 
-# Shortcut for docker-compose run --rm misago...
+# Shortcut for docker-compose run --rm backend...
 docker_run() {
-    docker-compose run --rm misago "${@:2}"
+    docker-compose run --rm backend "${@:2}"
 }
 
 # Shortcut for psql
 run_psql() {
-    docker-compose run --rm misago ./dev psql_in_docker
+    docker-compose run --rm backend ./dev psql_in_docker
 }
 
 # Docker part of psql shortcut
@@ -279,16 +239,16 @@ psql_in_docker() {
 
 # Shortcut for creating small dev forum
 create_fake_data() {
-    docker-compose run --rm misago python manage.py createfakecategories 7
-    docker-compose run --rm misago python manage.py createfakecategories 12 1
-    docker-compose run --rm misago python manage.py createfakehistory 600
+    docker-compose run --rm backend python manage.py createfakecategories 7
+    docker-compose run --rm backend python manage.py createfakecategories 12 1
+    docker-compose run --rm backend python manage.py createfakehistory 600
 }
 
 # Shortcut for creating big dev forum
 create_fake_bigdata() {
-    docker-compose run --rm misago python manage.py createfakecategories 48
-    docker-compose run --rm misago python manage.py createfakecategories 24 1
-    docker-compose run --rm misago python manage.py createfakehistory 2190 120
+    docker-compose run --rm backend python manage.py createfakecategories 48
+    docker-compose run --rm backend python manage.py createfakecategories 24 1
+    docker-compose run --rm backend python manage.py createfakehistory 2190 120
 }
 
 # Command dispatcher
@@ -308,22 +268,6 @@ if [[ $1 ]]; then
         rebuild $@
     elif [[ $1 = "test" ]]; then
         test $@
-    elif [[ $1 = "makemessages" ]]; then
-        makemessages ${2:-en}
-    elif [[ $1 = "makemessages_in_docker" ]]; then
-        makemessages_in_docker $2
-    elif [[ $1 = "compilemessages" ]]; then
-        compilemessages
-    elif [[ $1 = "compilemessages_in_docker" ]]; then
-        compilemessages_in_docker
-    elif [[ $1 = "txpull" ]]; then
-        txpull
-    elif [[ $1 = "txpush" ]]; then
-        txpush
-    elif [[ $1 = "txsync" ]]; then
-        makemessages en
-        txpush
-        txpull
     elif [[ $1 = "bash" ]]; then
         run_bash
     elif [[ $1 = "manage.py" ]]; then
@@ -335,8 +279,8 @@ if [[ $1 ]]; then
     elif [[ $1 = "psql_in_docker" ]]; then
         psql_in_docker
     elif [[ $1 = "pyfmt" ]]; then
-        isort -rc misago
-        black devproject misago
+        isort -rc backend
+        black devproject backend
     elif [[ $1 = "fakedata" ]]; then
         create_fake_data
     elif [[ $1 = "fakebigdata" ]]; then

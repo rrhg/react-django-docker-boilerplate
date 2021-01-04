@@ -16,16 +16,14 @@ RUN apt-get update && apt-get install -y \
     postgresql-client \
     gettext
 
-# Add requirements and install them. We do this unnecessasy rebuilding.
 ADD requirements.txt /
-#ADD requirements-plugins.txt /
 
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
-#    pip install -r requirements-plugins.txt
 
 WORKDIR /backend
 
+# for production
 #COPY . /backend
 
 EXPOSE 8000

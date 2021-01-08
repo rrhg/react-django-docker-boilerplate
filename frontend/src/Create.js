@@ -9,8 +9,7 @@ const Create = props => {
     event.preventDefault();
     event.stopPropagation();
     console.log('send post was called')
-    // fetch("http://localhost:8000/myapp/")
-    fetch("http://backend:8000/myapp/")
+    fetch("http://localhost:8000/myapp/")
       .then(res => res.json())
       .then(
         (result) => {

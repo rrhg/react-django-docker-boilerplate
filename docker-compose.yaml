@@ -4,6 +4,7 @@ services:
     # where to find Dockerfile
     build: ./frontend/
     command: npm start
+    #environment:
     ports:
       # Map port 3000 in the container to port 3000 on the host
       # This way we can access create-react-app through http://localhost:3000
@@ -15,7 +16,6 @@ services:
       - ./frontend:/frontend:Z
       # allow to call ./dev init_in_docker (bash script) from inside container
       - ./dev:/frontend/dev:Z
-    
 
   postgres:
     image: postgres:10

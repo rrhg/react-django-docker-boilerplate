@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # "dev" is an utility script speeding up different development tasks and actions.
 # To find out what options are available, run it without any arguments.

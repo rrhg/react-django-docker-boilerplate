@@ -71,6 +71,7 @@ intro() {
     echo "    ${BOLD}clear${NORMAL}             clear media and userdata dirs and destroy docker containers."
     echo "    ${BOLD}rebuild${NORMAL}           rebuild docker containers."
     echo "    ${BOLD}reset${NORMAL}             run clear followed by init."
+    echo "    ${BOLD}docker_delete_all${NORMAL} Warning! delete everything installed by docker(volumes,images,containers,networks) requires sudo password"
     echo
     echo "    Both init and rebuild args can be followed with any number of extra args and options that should be appended to docker-compose build."
     echo
@@ -189,6 +190,36 @@ after_init_message() {
     echo
 }
 
+
+docker_delete_all() {
+    # hopefully remove everything
+    # Warning : everything installed by docker will be gone
+    
+    # stop all running containers
+    sudo docker stop $(docker ps -aq)
+    
+    # remove all conatiners
+    sudo docker rm -f $(docker ps -aq)
+    sudo docker container prune -f
+    
+    # remove all images
+    sudo docker rmi $(docker images -qa)
+    sudo docker image prune -a -f
+    
+    # delete all volumes
+    sudo docker volume rm $(docker volume ls -q)
+    sudo docker volume prune -f
+    sudo docker system prune --volumes -f
+    
+    sudo docker network prune -f
+    
+    # just in case
+    # the problem with this by itself is that it respect resorces linked to running or existing containers
+    sudo docker system prune -a -f
+
+}
+
+
 # Clear existing dev project
 clear() {
     # echo -e "${RED}Warning:${NORMAL} You are going to delete media files created during development and destroy docker containers."
@@ -300,6 +331,8 @@ if [[ $1 ]]; then
     elif [[ $1 = "pyfmt" ]]; then
         isort -rc backend
         black devproject backend
+    elif [[ $1 = "docker_delete_all" ]]; then
+        docker_delete_all
     elif [[ $1 = "fakedata" ]]; then
         create_fake_data
     elif [[ $1 = "fakebigdata" ]]; then

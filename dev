@@ -125,6 +125,12 @@ init() {
     done
     
     docker-compose stop
+
+    # docs/pass-host-user-to-backend 
+    export USER_ID="$(id -u)"  
+    export GROUP_ID="$(id -g)"
+    export USER_NAME="$(id -un)"
+  
     docker-compose build --pull --force-rm "${@:2}"
     
     docker-compose run --rm frontend ./dev init_frontend inside_container
@@ -208,6 +214,12 @@ clear() {
 # Rebuild docker containers
 rebuild() {
     docker-compose stop
+
+    # docs/pass-host-user-to-backend 
+    export USER_ID="$(id -u)"  
+    export GROUP_ID="$(id -g)"
+    export USER_NAME="$(id -un)"
+  
     docker-compose build --pull --force-rm "${@:2}"
 }
 
@@ -218,7 +230,7 @@ test() {
 
 # Shortcut for starting bash session in running container
 run_bash() {
-    docker exec -it backend_backend_1 bash
+    docker exec -it react-django-docker-boilerplate_backend_1 bash
 }
 
 # Shortcut for docker-compose run --rm backend python manage.py

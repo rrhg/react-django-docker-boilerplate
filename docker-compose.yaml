@@ -29,7 +29,13 @@ services:
     # image: redis:5
     # restart: unless-stopped
   backend:
-    build: ./backend/
+    build:
+      context: ./backend
+      # dockerfile: Dockerfile
+      args:
+        - USER_ID
+        - GROUP_ID
+        - USER_NAME
     command: python manage.py runserver 0.0.0.0:8000
     # command: bash -c "
             #  echo before runserver------------------- &&

@@ -1,6 +1,10 @@
 
 How to open bash in a running container
 
+`./dev bash-backend` 
+
+or
+
 `cd react-django-docker-boilerplate`
 `docker ps`
 

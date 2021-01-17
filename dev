@@ -66,37 +66,24 @@ intro() {
     echo
     echo "Development project:"
     echo
-    echo "    ${BOLD}init${NORMAL}              initialize dev database for development."
-    echo "    ${BOLD}afterinit${NORMAL}         repeat help message displayed after init command is complete."
-    echo "    ${BOLD}clear${NORMAL}             clear media and userdata dirs and destroy docker containers."
-    echo "    ${BOLD}rebuild${NORMAL}           rebuild docker containers."
-    echo "    ${BOLD}reset${NORMAL}             run clear followed by init."
+    echo "    ${BOLD}init${NORMAL}            build & initialize frontend, backend & postgres for development"
+    echo "    ${BOLD}afterinit${NORMAL}       repeat help message displayed after init command is complete."
+    echo "    ${BOLD}clear${NORMAL}           destroy running docker containers."
+    # echo "    ${BOLD}clear${NORMAL}           clear media and userdata dirs and destroy docker containers."
+    echo "    ${BOLD}reset${NORMAL}           run clear followed by init."
+    echo "    ${BOLD}rebuild${NORMAL}         rebuild images without running init."
+    echo "    ${BOLD}manage.py${NORMAL}       runs \"python manage.py\" inside backend container."
+    echo "    ${BOLD}bash-backend${NORMAL}    starts bash session inside running backend container."
+    echo "    ${BOLD}bash-frontend${NORMAL}   starts bash session inside running frontend container."
+    echo "    ${BOLD}bash-postgres${NORMAL}   starts bash session inside running postgre container."
     echo "    ${BOLD}docker_delete_all${NORMAL} Warning! delete everything installed by docker(volumes,images,containers,networks) requires sudo password"
-    echo
-    echo "    Both init and rebuild args can be followed with any number of extra args and options that should be appended to docker-compose build."
-    echo
-    echo "Testing:"
-    echo
-    echo "    ${BOLD}test${NORMAL}              run tests suite using pytest."
-    echo
-    echo "Translations:"
-    echo
-    echo "    ${BOLD}makemessages${NORMAL}      update translation files for \"en\" language."
-    echo "    ${BOLD}makemessages lang${NORMAL} update translation files for \"lang\" language."
-    echo "    ${BOLD}compilemessages${NORMAL}   compile translation files to \"mo\" format."
-    echo "    ${BOLD}txpull${NORMAL}            pull translations from Transifex."
-    echo "    ${BOLD}txpush${NORMAL}            push new source files to Transifex."
-    echo "    ${BOLD}txsync${NORMAL}            runs entire process of syncing translations with Transifex."
-    echo
-    echo "Shortcuts:"
-    echo
-    echo "    ${BOLD}manage.py${NORMAL}         runs \"python manage.py\" inside docker."
-    echo "    ${BOLD}bash${NORMAL}              starts bash session inside running backend container."
-    echo "    ${BOLD}run${NORMAL}               runs \"docker-compose run --rm backend\"."
-    echo "    ${BOLD}psql${NORMAL}              runs psql connected to development database."
-    echo "    ${BOLD}pyfmt${NORMAL}             runs isort + black on python code."
-    echo "    ${BOLD}fakedata${NORMAL}          populates database with testing data."
-    echo "    ${BOLD}fakebigdata${NORMAL}       populates database with LARGE amount of testing data."
+    # echo
+    # echo "    Both init and rebuild args can be followed with any number of extra args and options that should be appended to docker-compose build."
+    # echo
+    # echo "    ${BOLD}test${NORMAL}              run tests suite using pytest."
+    # echo "    ${BOLD}run${NORMAL}               runs \"docker-compose run --rm backend\"."
+    # echo "    ${BOLD}psql${NORMAL}              runs psql connected to development database."
+    # echo "    ${BOLD}pyfmt${NORMAL}             runs isort + black on python code."
     echo
 }
 
@@ -252,6 +239,10 @@ rebuild() {
     export USER_NAME="$(id -un)"
   
     docker-compose build --pull --force-rm "${@:2}"
+    # If you change a service’s Dockerfile or the contents of its build directory, run docker-compose build to rebuild it.
+    # --force-rm              Always remove intermediate containers
+    #--pull                  Always attempt to pull a newer version of the image.
+
 }
 
 # Run tests suite
@@ -260,9 +251,18 @@ test() {
 }
 
 # Shortcut for starting bash session in running container
-run_bash() {
+run_bash_backend() {
     docker exec -it react-django-docker-boilerplate_backend_1 bash
 }
+
+run_bash_frontend() {
+    docker exec -it react-django-docker-boilerplate_frontend_1 bash
+}
+
+run_bash_postgres() {
+    docker exec -it react-django-docker-boilerplate_postgres_1 bash
+}
+
 
 # Shortcut for docker-compose run --rm backend python manage.py
 run_managepy() {
@@ -285,20 +285,6 @@ psql_in_docker() {
     PGPASSWORD=$POSTGRES_PASSWORD psql --username $POSTGRES_USER --host $POSTGRES_HOST $POSTGRES_DB
 }
 
-# Shortcut for creating small dev forum
-create_fake_data() {
-    docker-compose run --rm backend python manage.py createfakecategories 7
-    docker-compose run --rm backend python manage.py createfakecategories 12 1
-    docker-compose run --rm backend python manage.py createfakehistory 600
-}
-
-# Shortcut for creating big dev forum
-create_fake_bigdata() {
-    docker-compose run --rm backend python manage.py createfakecategories 48
-    docker-compose run --rm backend python manage.py createfakecategories 24 1
-    docker-compose run --rm backend python manage.py createfakehistory 2190 120
-}
-
 # Command dispatcher
 if [[ $1 ]]; then
     if [[ $1 = "init" ]]; then
@@ -318,8 +304,12 @@ if [[ $1 ]]; then
         rebuild $@
     elif [[ $1 = "test" ]]; then
         test $@
-    elif [[ $1 = "bash" ]]; then
-        run_bash
+    elif [[ $1 = "bash-backend" ]]; then
+        run_bash_backend
+    elif [[ $1 = "bash-frontend" ]]; then
+        run_bash_frontend
+    elif [[ $1 = "bash-postgres" ]]; then
+        run_bash_postgres
     elif [[ $1 = "manage.py" ]]; then
         run_managepy $@
     elif [[ $1 = "run" ]]; then
@@ -333,10 +323,6 @@ if [[ $1 ]]; then
         black devproject backend
     elif [[ $1 = "docker_delete_all" ]]; then
         docker_delete_all
-    elif [[ $1 = "fakedata" ]]; then
-        create_fake_data
-    elif [[ $1 = "fakebigdata" ]]; then
-        create_fake_bigdata
     else
         invalid_argument $1
     fi

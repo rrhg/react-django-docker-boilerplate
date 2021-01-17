@@ -4,8 +4,7 @@ We want to be able to use:
 docker-compose run --rm backend python manage.py startapp myapp
 # or the shorter version
 /dev manage.py startapp myapp 
-
-`
+```
 ( trying to avoid creation of a virtual env since we are already working in a container environment)
 
 But the files created, will have the username, id & group of a the user inside the container.

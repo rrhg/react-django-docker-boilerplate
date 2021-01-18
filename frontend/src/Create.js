@@ -9,7 +9,7 @@ const Create = props => {
     event.preventDefault();
     event.stopPropagation();
     console.log('send post was called')
-    fetch("http://localhost:8000/myapp/")
+    fetch("http://localhost:8000/api/apimodel/")
       .then(res => res.json())
       .then(
         (result) => {

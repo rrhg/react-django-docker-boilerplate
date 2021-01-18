@@ -1,6 +1,6 @@
 from django.db import models
 
-class MyModel(models.Model):
+class APIModel(models.Model):
     title = models.CharField(max_length=255)
 
     def __str__(self):

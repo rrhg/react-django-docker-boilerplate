@@ -19,13 +19,10 @@ export default function App() {
         <nav>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/">Create-react-app inlcluded component</Link>
             </li>
             <li>
               <Link to="/create">Create a Django SampleModel</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
             </li>
           </ul>
         </nav>
@@ -35,9 +32,6 @@ export default function App() {
         <Switch>
           <Route path="/create">
             <Create />
-          </Route>
-          <Route path="/users">
-            <Users />
           </Route>
           <Route path="/">
             <Home />
@@ -49,7 +43,7 @@ export default function App() {
 }
 
 function Home() {
-  // return <h2>Home</h2>;
+  // Create-react-app included component
   return (
     <div className="App">
       <header className="App-header">
@@ -68,18 +62,4 @@ function Home() {
       </header>
     </div>
   );
-
-}
-
-// function Create() {
-  // return (
-    // <>
- //     {/* <h2>Create a new Django SampleModel </h2> */}
- //     {/* <h4>This react-bootsrap form will send an http post request to Django sample app to create a new SampleModel in Postgres database </h4> */}
- //   {/* </> */}
-  // )
-// }
-
-function Users() {
-  return <h2>Users</h2>;
 }

@@ -6,7 +6,6 @@ Only tested in Ubuntu Desktop 20.04
 
 Credit: many ideas come from [misago](https://github.com/rafalp/Misago)
 
-Instrctions:
 ```
 git clone https://github.com/rrhg/react-django-docker-boilerplate.git myproject
 cd myproject
@@ -14,10 +13,9 @@ cd myproject
 docker-compose up
 ```
 
-Create-react-app - - - -  -> localhost:3000
-Django - - - - - - - - -  -> localhost:8000
-Django rest-framework app -> localhost:8000/api
-
+Create-react-app - - - -  -> localhost:3000   
+Django - - - - - - - - -  -> localhost:8000   
+Django rest-framework app -> localhost:8000/api   
 
 
 

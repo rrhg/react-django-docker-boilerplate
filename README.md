@@ -6,6 +6,12 @@ Only tested in Ubuntu Desktop 20.04
 
 Credit: many ideas come from [misago](https://github.com/rafalp/Misago)
 
+
+Make sure:   
+1. docker & docker-compose are installed
+1. both can be used without sudo
+
+
 ```
 git clone https://github.com/rrhg/react-django-docker-boilerplate.git myproject
 cd myproject

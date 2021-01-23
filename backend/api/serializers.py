@@ -3,6 +3,8 @@ from .models import APIModel
 
 
 class APIModelSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = APIModel
-        fields = ['title']
+        fields = ('id','title')

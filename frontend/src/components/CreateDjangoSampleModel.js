@@ -1,32 +1,35 @@
+import React from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 
-const Create = props => {
+const GetDjangoSampleModel = props => {
 
-  const sendPostReq = (event) => {
+  const [title, setTitle] = React.useState("")
+  const [response, setResponse] = React.useState({})
+
+  const onPostReq = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log('send post was called')
-    fetch("http://localhost:8000/api/apimodel/")
-      .then(res => res.json())
-      .then(
+    const objectToSend = {title:title}
+    fetch("http://localhost:8000/api/apimodel/", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(objectToSend)
+    })
+    .then(res => res.json())
+    .then(
         (result) => {
-          console.log(result)
-          // setIsLoaded(true);
-          // setItems(result);
+          setResponse(result)
         },
-        // Note: it's important to handle errors here
-  
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           console.log(error)
-          // setIsLoaded(true);
-          // setError(error);
         }
-      )
+    )
   }
 
   return (
@@ -36,12 +39,11 @@ const Create = props => {
     ...Let's create a SampleModel in Django backend by making a post request to /sampleapp endpoint
     </h2>
 
-    {/* <Form onSubmit={()=>console.log('onSubmit was called')}> */}
-    <Form onSubmit={sendPostReq}>
+    <Form onSubmit={onPostReq}>
     <Form.Group>
     {/* <Form.Group controlId="formBasicEmail"> */}
         <Form.Label>SampleModel Title</Form.Label>
-        <Form.Control type="text" placeholder="Enter title" />
+        <Form.Control onChange={(e)=>setTitle(e.target.value)} value={title} type="text" placeholder="Enter title" />
         <Form.Text className="text-muted">
         Weird titles ar Ok
         </Form.Text>
@@ -49,8 +51,8 @@ const Create = props => {
     
     <Form.Group>
     {/* <Form.Group controlId="formBasicPassword"> */}
-        <Form.Label>Additional Info</Form.Label>
-        <Form.Control type="text" placeholder="Enter additional info" />
+        <Form.Label>Object received in response </Form.Label>
+        <Form.Control onChange={(e)=>{}} value={JSON.stringify(response)} type="text" />
     </Form.Group>
     <Form.Group controlId="formBasicCheckbox">
         <Form.Check type="checkbox" label="Check me out" />
@@ -64,4 +66,4 @@ const Create = props => {
   )
 }
 
-export default Create
+export default GetDjangoSampleModel

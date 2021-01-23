@@ -20,8 +20,35 @@ docker-compose up
 ```
 
 Create-react-app - - - -  -> localhost:3000   
-Django - - - - - - - - -  -> localhost:8000   
-Django rest-framework app -> localhost:8000/api   
+Django - - - - - - - - - - -  -> localhost:8000   
+rest-framework web browsable API -> localhost:8000/api   
+Create a sample model - - -> localhost:8000/api/apimodel  
+
+
+How create a new Django app:  
+```
+#shurtcut
+./dev manage.py startapp myapp
+# or 
+docker-compose run --rm backend python manage.py startapp myapp
+```   
+
+
+How stop servers & run them again:   
+```
+<ctrl> c
+docker-compose up
+```   
+
+
+How delete all containers & initialize everything again:   
+```
+./dev reset
+```   
+
+For more dev options run `./dev`   
+
+
 
 
 

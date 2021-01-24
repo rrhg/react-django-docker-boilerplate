@@ -19,7 +19,7 @@ services:
 
   postgres:
     image: postgres:10
-    restart: unless-stopped
+    # restart: unless-stopped # maybe not neeeded in development
     environment:
       - POSTGRES_USER=django
       - POSTGRES_PASSWORD=django

@@ -17,7 +17,14 @@ git clone https://github.com/rrhg/react-django-docker-boilerplate.git myproject
 cd myproject
 ./dev init
 docker-compose up
-```
+```   
+
+3 containers will be started:   
+1. backend (with command python manage.py runserver)
+1. frontend (with command npm start)
+1. postgres   
+
+Check your terminal & wait for both servers to be ready   
 
 Create-react-app - - - -  -> localhost:3000   
 Django - - - - - - - - - - -  -> localhost:8000   
@@ -40,13 +47,28 @@ How stop servers & run them again:
 docker-compose up
 ```   
 
+How open open bash in running containers  
+```   
+# open new terminal window in project folder
+
+# backend (Django) container
+./dev bash-backend
+# or
+docker exec -it <container id> bash   
+ 
+# frontend (Create-react-app) container
+./dev bash-frontend
+# or
+docker exec -it <container id> bash
+```   
+
 
 How delete all containers & initialize everything again:   
 ```
 ./dev reset
 ```   
 
-For more dev options run `./dev`   
+For more dev options run `./dev` without arguments   
 
 
 

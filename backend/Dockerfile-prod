@@ -1,9 +1,5 @@
 FROM python:3.9
 
-ARG USER_ID
-ARG GROUP_ID
-ARG USER_NAME
-
 ENV PYTHONUNBUFFERED 1
 ENV IN_BACKEND_DOCKER 1
 
@@ -23,16 +19,9 @@ ADD requirements.txt /
 
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
+RUN pip install gunicorn
 
-RUN addgroup --gid "${GROUP_ID}" "${USER_NAME}"
-RUN adduser --disabled-password --gecos '' --uid "${USER_ID}" --gid "${GROUP_ID}" "${USER_NAME}"
-USER "${USER_NAME}"
-
+COPY . /backend
 WORKDIR /backend
 
-# for production
-#COPY . /backend
-
-EXPOSE 8000
-
-CMD python manage.py runserver 0.0.0.0:8000
+EXPOSE 3031

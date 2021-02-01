@@ -1,0 +1,81 @@
+version: "3.0"
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 80:80
+      # -443:443
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+  postgres:
+    image: postgres:10
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+    ports:
+      - '127.0.0.1:5432:5432'
+#   redis:
+    # image: redis:5
+    # restart: unless-stopped
+  backend:
+    # where to find Dockerfile
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-prod
+      # dockerfile: ./backend/Dockerfile-prod
+    command: gunicorn backend.wsgi --bind 0.0.0.0:3031 --workers 4 --threads 4
+    environment:
+      # Postgres
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+      - POSTGRES_DB=django
+      - POSTGRES_HOST=postgres
+      - POSTGRES_TEST_DB=django_test
+      # Superuser
+      - SUPERUSER_USERNAME=Admin
+      - SUPERUSER_EMAIL=admin@example.com
+      - SUPERUSER_PASSWORD=password
+    ports:
+      - "3031:3031"
+    depends_on:
+      - postgres
+    #   - redis
+    tty: true
+    volumes:
+      # - ./backend/static:/backend/static:ro
+      # # allow to call ./prod init_in_docker (bash script) from inside container
+      - ./prod:/backend/prod:ro
+      # - ./backend/backups:/backend/backups:Z
+      # - ./backend/logs:/backend/logs:z
+#   celery:
+    # build: .
+    # command: celery -A devproject worker --loglevel=info
+    # environment:
+    #   # Postgres
+    #   - POSTGRES_USER=django
+    #   - POSTGRES_PASSWORD=django
+    #   - POSTGRES_DB=django
+    #   - POSTGRES_HOST=postgres
+    #   - POSTGRES_TEST_DB=django_test
+    # depends_on:
+    #   - postgres
+    #   - redis
+    # tty: true
+    # volumes:
+    #   # Map in the entire project into the container
+    #   # This makes sure files in the container updates on the fly as we were working locally
+    #   - .:/backend:Z
+
+# fix for: ERROR: could not find an available, non-overlapping IPv4 address pool among the defaults to assign to the network
+# happens sometimes when your laptop vpn services use same addresses as docker network
+# if this creates any type of error, just comment out everything. It will still work with the default network & default id addresses
+networks:
+    default:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.16.57.0/24

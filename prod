@@ -1,31 +1,37 @@
 #!/usr/bin/env bash
 
-# "dev" is an utility script speeding up different development tasks and actions.
+# "prod" is an utility script for production deployment.
 # To find out what options are available, run it without any arguments.
+
 
 # Text styles
 RED='\033[0;31m'
 BOLD=$(tput bold)
 NORMAL=$(tput sgr0)
 
+
 # Required ports
 # Some tasks test for those ports before continuing
 port_django=${DEVSERVER_PORT:-8000}
+
 port_postgresql=5432
 
 required_ports=($port_postgresql $port_django)
 
 project_name=$(basename "${PWD}")
 
+
 # Default superuser
 username="Admin"
 password="password"
 email="admin@example.com"
 
+
 # Utility functions used by action commands
 error() {
     echo -e "${RED}Error:${NORMAL} $1"
 }
+
 
 require_in_docker() {
     if [[ ! $IN_BACKEND_DOCKER = 1 ]]; then
@@ -33,6 +39,7 @@ require_in_docker() {
         exit 1
     fi
 }
+
 
 wait_for_db() {
     require_in_docker
@@ -62,6 +69,7 @@ if [[ ! "${@:2}" == "inside_container" ]]; then #2nd arg added when calling this
   fi
 fi
 
+
 # Commands
 intro() {
     echo "Usage: ./prod [arg] ..."
@@ -70,16 +78,20 @@ intro() {
     echo
     echo "Production arguments grouped by type:"
     echo
-    echo "    ${BOLD}init${NORMAL}            build & initialize(migrations + createsuperuser) backend & postgres for production"
+    echo "    ${BOLD}init${NORMAL}            build & initialize images for production"
+    echo "                                    (initialize == migrations + createsuperuser)"
     echo "    ${BOLD}afterinit${NORMAL}       repeat help message displayed after init command is complete."
     echo "    ${BOLD}up${NORMAL}              docker-compose -f docker-compose-prod.yaml up"
     echo "    ${BOLD}down${NORMAL}            docker-compose -f docker-compose-prod.yaml down"
-    echo "    ${BOLD}restart${NORMAL}         down + init + up  "
+    echo "                                    (down deletes containers & network, but no volumes)"
+    echo "    ${BOLD}restart${NORMAL}         down + up  "
     echo "    ${BOLD}stop${NORMAL}            docker-compose -f docker-compose-prod.yaml stop"
-    echo "    ${BOLD}clear${NORMAL}           destroy running docker containers, network & volumes."
+    # echo "    ${BOLD}clear${NORMAL}           destroy running docker containers, network & volumes."
     # echo "    ${BOLD}clear${NORMAL}           clear media and userdata dirs and destroy docker containers."
-    echo "    ${BOLD}reset${NORMAL}           run clear followed by init."
+    # echo "    ${BOLD}reset${NORMAL}           run clear followed by init."
     echo "    ${BOLD}rebuild${NORMAL}         rebuild images without running init."
+    echo "    ${BOLD}rebuildup${NORMAL}       rebuild + init + up."
+    
     echo "    ${BOLD}manage.py${NORMAL}       runs \"python manage.py\" inside backend container."
     echo "    ${BOLD}bash-backend${NORMAL}    starts bash session inside running backend container."
     # echo "    ${BOLD}bash-frontend${NORMAL}   starts bash session inside running frontend container."
@@ -95,12 +107,14 @@ intro() {
     echo
 }
 
+
 # Handle invalid argument
 invalid_argument() {
     echo -e "Invalid argument: ${RED}$1${NORMAL}"
     echo "Please run this script without any arguments to see the list of available arguments."
     exit 1
 }
+
 
 # PRODUCTION INIT
 init() {
@@ -125,35 +139,39 @@ init() {
     done
 
     # in production there is no frontend container
-    # developer should run ./dev 
+    # developer should run ./dev npm-build prior to using ./prod
 
     # --pull = Always attempt to pull a newer version of the image
     # --force-rm = Always remove intermediate containers
     docker-compose -f docker-compose-prod.yaml build --pull --force-rm "${@:2}"
-    
 
-    docker-compose -f docker-compose-prod.yaml run --rm backend ./gunicorn-entrypoint.sh
+    docker-compose -f docker-compose-prod.yaml run --rm backend ./init.sh
 
     after_init_message
 }
+
 
 up() {
     docker-compose -f docker-compose-prod.yaml up "${@:2}"
 }
 
+
 down() {
-    docker-compose -f docker-compose-prod.yaml down "${@:2}"
+    docker-compose -f docker-compose-prod.yaml down --remove-orphans "${@:2}"
 }
+
 
 restart() {
     down $@
-    init $@
+    # init $@
     up $@
 }
+
 
 stop() {
     docker-compose -f docker-compose-prod.yaml stop "${@:2}"
 }
+
 
 # After-init message
 after_init_message() {
@@ -205,52 +223,37 @@ docker_delete_all() {
     # just in case
     # the problem with this by itself is that it respect resorces linked to running or existing containers
     sudo docker system prune -a -f
-
 }
 
 
-# Clear existing dev project
-clear() {
-    # echo -e "${RED}Warning:${NORMAL} You are going to delete media files created during development and destroy docker containers."
-    # echo
-
-    # devproject_path="$(pwd)/devproject"
-
-    # echo "Enter \"y\" to confirm:"
-
-    # read confirmation
-    # if [[ $confirmation = "y" ]]; then
-        docker-compose -f docker-compose-prod.yaml stop
-        docker-compose -f docker-compose-prod.yaml down --remove-orphans
-
-        # eventually will use this after media & userdata files are done 
-        # find $devproject_path/media -mindepth 1 ! -name '.gitignore' -delete
-        # find $devproject_path/userdata -mindepth 1 ! -name '.gitignore' -delete
-    # else
-        # echo "Operation canceled."
-    # fi
-}
-
-# Rebuild docker containers
+# Rebuild docker images
 rebuild() {
-    docker-compose -f docker-compose-prod.yaml stop
-
+    down $@
     docker-compose -f docker-compose-prod.yaml build --pull --force-rm "${@:2}"
     # If you change a service’s Dockerfile or the contents of its build directory, run docker-compose build to rebuild it.
     # --force-rm              Always remove intermediate containers
     #--pull                  Always attempt to pull a newer version of the image.
-
 }
+
+
+rebuildup() {
+    rebuild $@
+    init $@
+    up $@
+}
+
 
 # Run tests suite
 test() {
     docker-compose -f docker-compose-prod.yaml run --rm backend pytest "${@:2}"
 }
 
+
 # Shortcut for starting bash session in running container
 run_bash_backend() {
     docker exec -it "${project_name}_backend_1" bash
 }
+
 
 run_bash_postgres() {
     docker exec -it "${project_name}_postgres_1" bash
@@ -262,21 +265,25 @@ run_managepy() {
     docker-compose run --rm backend python manage.py "${@:2}"
 }
 
+
 # Shortcut for docker-compose run --rm backend...
 docker_run() {
     docker-compose run --rm backend "${@:2}"
 }
+
 
 # Shortcut for psql
 run_psql() {
     docker-compose run --rm backend ./dev psql_in_docker
 }
 
+
 # Docker part of psql shortcut
 psql_in_docker() {
     wait_for_db
     PGPASSWORD=$POSTGRES_PASSWORD psql --username $POSTGRES_USER --host $POSTGRES_HOST $POSTGRES_DB
 }
+
 
 # Command dispatcher
 if [[ $1 ]]; then
@@ -297,6 +304,8 @@ if [[ $1 ]]; then
         init $@
     elif [[ $1 = "rebuild" ]]; then
         rebuild $@
+    elif [[ $1 = "rebuildup" ]]; then
+        rebuildup $@
     elif [[ $1 = "up" ]]; then
         up $@
     elif [[ $1 = "down" ]]; then

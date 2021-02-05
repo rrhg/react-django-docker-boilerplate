@@ -37,11 +37,6 @@ services:
         - GROUP_ID
         - USER_NAME
     command: python manage.py runserver 0.0.0.0:8000
-    # command: bash -c "
-            #  echo before runserver------------------- &&
-            #  python manage.py runserver 0.0.0.0:8000 &&
-            #  echo after runserver------------------ &&
-            #  ./dev after_init_message"
     environment:
       # Postgres
       - POSTGRES_USER=django
@@ -53,6 +48,7 @@ services:
       - SUPERUSER_USERNAME=Admin
       - SUPERUSER_EMAIL=admin@example.com
       - SUPERUSER_PASSWORD=password
+      - DJANGO_SETTINGS_MODULE=backend.settings
     ports:
       # Map port 8000 in the container to port 8000 on the host
       # This way we can access Django through http://localhost:8000

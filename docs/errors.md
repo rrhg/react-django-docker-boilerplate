@@ -1,5 +1,22 @@
 
+
+`ProgrammingError at /api/apimodel/`
+Probably the initialization (migrations) was not run
+One way to fix this could be:   
+`./dev rebuildup`   (in development)   
+or   
+`./prod rebuildup`   (in production)   
+This will:   
+1. Rebuild images
+1. Run Django migrations
+1. Create superuser
+1. Create & run containers
+
+
+
+```   
 Error response from daemon: Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.io…i/o timeout
+```   
 
 Solution 1: just try again
 
@@ -8,7 +25,11 @@ https://stackoverflow.com/questions/61094097/error-response-from-daemon-get-http
 
 
 
-Service 'nginx' failed to build: Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.io on 127.0.0.53:53: read udp 127.0.0.1:43708->127.0.0.53:53: i/o timeout
+
+```   
+Service 'nginx' failed to build: Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.io on 127.0.0.53:53: read udp 127.0.0.1:43708->127.0.0.53:53: i/o timeout   
+```   
+
 
 Solution 1: just try again
 

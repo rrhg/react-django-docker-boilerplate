@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
 
 # wait for db
 export PGPASSWORD=$POSTGRES_PASSWORD

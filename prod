@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 # "prod" is an utility script for production deployment.
 # To find out what options are available, run it without any arguments.
 
@@ -20,6 +21,7 @@ required_ports=($port_postgresql $port_django)
 
 project_name=$(basename "${PWD}")
 
+IN_DOCKER=${IN_DOCKER}
 
 # Default superuser
 username="Admin"

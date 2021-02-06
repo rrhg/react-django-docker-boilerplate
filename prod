@@ -96,7 +96,7 @@ intro() {
     
     echo "    ${BOLD}manage.py${NORMAL}       runs \"python manage.py\" inside backend container."
     echo "    ${BOLD}bash-backend${NORMAL}    starts bash session inside running backend container."
-    # echo "    ${BOLD}bash-frontend${NORMAL}   starts bash session inside running frontend container."
+    echo "    ${BOLD}bash-nginx${NORMAL}      starts bash session inside running nginx container."
     echo "    ${BOLD}bash-postgres${NORMAL}   starts bash session inside running postgre container."
     echo "    ${BOLD}docker_delete_all${NORMAL} Warning! delete everything installed by docker(volumes,images,containers,networks) requires sudo password"
     # echo
@@ -257,6 +257,11 @@ run_bash_backend() {
 }
 
 
+run_bash_nginx() {
+    docker exec -it "${project_name}_nginx_1" bash
+}
+
+
 run_bash_postgres() {
     docker exec -it "${project_name}_postgres_1" bash
 }
@@ -318,8 +323,8 @@ if [[ $1 ]]; then
         test $@
     elif [[ $1 = "bash-backend" ]]; then
         run_bash_backend
-    elif [[ $1 = "bash-frontend" ]]; then
-        run_bash_frontend
+    elif [[ $1 = "bash-nginx" ]]; then
+        run_bash_nginx
     elif [[ $1 = "bash-postgres" ]]; then
         run_bash_postgres
     elif [[ $1 = "manage.py" ]]; then

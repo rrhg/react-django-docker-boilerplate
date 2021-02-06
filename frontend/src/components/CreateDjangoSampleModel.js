@@ -36,7 +36,7 @@ const GetDjangoSampleModel = props => {
   <Container>
     <Jumbotron>
     <h2 className="header">
-    ...Let's create a SampleModel in Django backend by making a post request to /sampleapp endpoint
+    ..Let's create a SampleModel in Django backend by making a post request to /sampleapp endpoint
     </h2>
 
     <Form onSubmit={onPostReq}>

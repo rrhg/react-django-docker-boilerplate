@@ -28,7 +28,7 @@ const GetDjangoSampleModel = props => {
   <Container>
     <Jumbotron>
     <h3 className="header">
-    ...Let's get all Django Sample Models by making a get request to /api/apimodel endpoint
+    ..Let's get all Django Sample Models by making a get request to /api/apimodel endpoint
     </h3>
     <Button variant="primary" onClick={onGetModels}>
         Get

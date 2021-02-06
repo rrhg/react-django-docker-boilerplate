@@ -2,8 +2,9 @@ version: "3.0"
 services:
   nginx:
     build:
-      context: ./nginx
-      dockerfile: Dockerfile
+      # so that we can copy frontend/build to nginx
+      context: .
+      dockerfile: nginx/Dockerfile
     restart: unless-stopped
     ports:
       - 80:80

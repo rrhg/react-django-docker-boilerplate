@@ -11,7 +11,8 @@ const GetDjangoSampleModel = props => {
   const onGetModels = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    fetch("http://localhost:8000/api/apimodel/")
+    fetch("http://localhost/api/apimodel/")
+    // fetch("http://localhost:8000/api/apimodel/")
       .then(res => res.json())
       .then(
         (models) => {

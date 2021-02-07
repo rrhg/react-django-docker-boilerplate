@@ -137,12 +137,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CORS_ALLOWED_ORIGINS = [
-  'http://localhost',
-  'http://127.0.0.1',
-#   'http://localhost:3000', # react server host
-
-]
+# Dangerous - allows all
+CORS_ALLOW_ALL_ORIGINS = True
+# use this instead with your host
+# CORS_ALLOWED_ORIGINS = [
+#   'http://localhost',
+#   'http://127.0.0.1',
+# #   'http://localhost:3000', # react server host
+# ]
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [

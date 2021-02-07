@@ -8,12 +8,14 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import logo from './logo.svg'
+import {Provider} from './Context'
 import GetDjangoSampleModel from './components/GetDjangoSampleModel'
 import CreateDjangoSampleModel from './components/CreateDjangoSampleModel'
 import './App.css'
 
 export default function App() {
   return (
+  <Provider>
     <Router>
       <div>
         <nav>
@@ -45,6 +47,7 @@ export default function App() {
         </Switch>
       </div>
     </Router>
+  </Provider>
   );
 }
 

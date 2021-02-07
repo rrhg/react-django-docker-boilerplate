@@ -1,4 +1,5 @@
 import React from 'react'
+import {Context} from '../Context'
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
@@ -8,11 +9,14 @@ const GetDjangoSampleModel = props => {
 
   const [models, setModels] = React.useState([])
 
+  const context = React.useContext(Context)
+  const backendHost = context.backendHost
+
   const onGetModels = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    fetch("http://localhost/api/apimodel/")
-    // fetch("http://localhost:8000/api/apimodel/")
+
+    fetch(backendHost + "/api/apimodel/")
       .then(res => res.json())
       .then(
         (models) => {

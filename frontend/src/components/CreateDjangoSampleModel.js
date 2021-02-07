@@ -1,4 +1,5 @@
 import React from 'react'
+import {Context} from '../Context'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -9,11 +10,14 @@ const GetDjangoSampleModel = props => {
   const [title, setTitle] = React.useState("")
   const [response, setResponse] = React.useState({})
 
+  const context = React.useContext(Context)
+  const backendHost = context.backendHost
+
   const onPostReq = (event) => {
     event.preventDefault();
     event.stopPropagation();
     const objectToSend = {title:title}
-    fetch("http://localhost:8000/api/apimodel/", {
+    fetch(backendHost + "/api/apimodel/", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

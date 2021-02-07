@@ -11,8 +11,8 @@ Credit: many ideas come from [misago](https://github.com/rafalp/Misago) & [saasi
    1. docker & docker-compose are installed
    1. both can be used without sudo
 1. Fork the repo
-1. `git clone https://github.com/<username>/react-django-docker-boilerplate.git myproject
-cd myproject`
+1. `git clone https://github.com/<username>/react-django-docker-boilerplate.git myproject`
+1. `cd myproject`
 1. `./dev init`
    1. for Django migrations, createsuperuser, & ...   
 1. `./dev up` or `docker-compose up`

@@ -1,35 +1,50 @@
 # react-django-docker-boilerplate
 
-# work in process...
+# work in process...(as in not ready)
 
 Only tested in Ubuntu Desktop 20.04
 
-Credit: many ideas come from [misago](https://github.com/rafalp/Misago)
+Credit: many ideas come from [misago](https://github.com/rafalp/Misago) & [saasitive/django-react-boilerplate](https://github.com/saasitive/django-react-boilerplate)
 
 
-Make sure:
-1. docker & docker-compose are installed
-1. both can be used without sudo
+1. Make sure:
+  1. docker & docker-compose are installed
+  1. both can be used without sudo
+1. Fork the repo
+1. `git clone https://github.com/<username>/react-django-docker-boilerplate.git myproject
+cd myproject`
+1. `./dev init`
+1. `./dev up` 
+  1. or `docker-compose up`
+1. 3 containers will be started:   
+  1. frontend (with command npm start)
+    1. Create-react-app -> localhost:3000  
+  1. backend (with command python manage.py runserver)
+    1. rest-framework web browsable API -> localhost:8000/api 
+  1. postgres   
+1. Check your terminal & wait for both servers to be ready (in slow environments give them some time)   
+1. Make your changes
+1. `./dev npm-build`
+1. `git push`
+1. In production:
+  1. `ssh user@<my_vps_ip>`
+  1. `git clone https://github.com/<username>/react-django-docker-boilerplate.git myproject
+cd myproject`
+  1. `./prod init`
+    1. frontend build folder will be copied to nginx
+  1. `./prod up`    
+
+Todos:
+☐ env files
+☐ postgres bind mount volumen for data 
+☐ Django settings-base.py & new folder
+☐ https let's encrypt
+☐ will probably only use Django as an API with rest_framework & keep React completely independent & served by nginx
+☐ many more
+☐ 
+☐   
 
 
-```
-git clone https://github.com/rrhg/react-django-docker-boilerplate.git myproject
-cd myproject
-./dev init
-docker-compose up
-```   
-
-3 containers will be started:   
-1. backend (with command python manage.py runserver)
-1. frontend (with command npm start)
-1. postgres   
-
-Check your terminal & wait for both servers to be ready   
-
-Create-react-app - - - -  -> localhost:3000   
-Django - - - - - - - - - - -  -> localhost:8000   
-rest-framework web browsable API -> localhost:8000/api   
-Create a sample model - - -> localhost:8000/api/apimodel  
 
 
 How create a new Django app:  
@@ -45,6 +60,10 @@ How stop servers & run them again:
 ```
 <ctrl> c
 docker-compose up
+# or
+./dev up
+# in production
+./prod up
 ```   
 
 How open open bash in running containers  
@@ -63,9 +82,11 @@ docker exec -it <container id> bash
 ```   
 
 
-How delete all containers & initialize everything again:   
+How delete containers, rebuild images, initialize, & run containers again (without deleting database data volumes):   
 ```
-./dev reset
+./dev rebuildup
+# or in production
+./prod rebuildup
 ```   
 
 For more dev options run `./dev` without arguments   

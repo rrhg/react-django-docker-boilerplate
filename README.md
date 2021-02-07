@@ -8,41 +8,43 @@ Credit: many ideas come from [misago](https://github.com/rafalp/Misago) & [saasi
 
 
 1. Make sure:
-  1. docker & docker-compose are installed
-  1. both can be used without sudo
+   1. docker & docker-compose are installed
+   1. both can be used without sudo
 1. Fork the repo
 1. `git clone https://github.com/<username>/react-django-docker-boilerplate.git myproject
 cd myproject`
 1. `./dev init`
-1. `./dev up` 
-  1. or `docker-compose up`
+   1. for Django migrations, createsuperuser, & ...   
+1. `./dev up` or `docker-compose up`
 1. 3 containers will be started:   
-  1. frontend (with command npm start)
-    1. Create-react-app -> localhost:3000  
-  1. backend (with command python manage.py runserver)
-    1. rest-framework web browsable API -> localhost:8000/api 
-  1. postgres   
-1. Check your terminal & wait for both servers to be ready (in slow environments give them some time)   
+   1. frontend (with command npm start)
+      1. [Create-react-app](https://github.com/facebook/create-react-app) -> localhost:3000
+   1. backend (with command python manage.py runserver)
+      1. rest-framework web browsable API -> localhost:8000/api 
+   1. postgres   
+1. Check your terminal & wait for both servers to be ready
+   1. In slow environments give them some time & reload browser  
 1. Make your changes
+   1. [Create-react-app](https://github.com/facebook/create-react-app) auto reload feature should work as expected
 1. `./dev npm-build`
 1. `git push`
 1. In production:
-  1. `ssh user@<my_vps_ip>`
-  1. `git clone https://github.com/<username>/react-django-docker-boilerplate.git myproject
-cd myproject`
-  1. `./prod init`
-    1. frontend build folder will be copied to nginx
-  1. `./prod up`    
+   1. `ssh user@<my_vps_ip>`
+   1. `git clone https://github.com/<username>/react-django-docker-boilerplate.git myproject`
+   1. `cd myproject`
+   1. `./prod init`
+      1. frontend build folder will be copied to nginx
+   1. `./prod up` or `docker-compose up`    
 
-Todos:
-☐ env files
-☐ postgres bind mount volumen for data 
-☐ Django settings-base.py & new folder
-☐ https let's encrypt
-☐ will probably only use Django as an API with rest_framework & keep React completely independent & served by nginx
-☐ many more
-☐ 
-☐   
+Todos:   
+☐ env files   
+☐ postgres bind mount volumen for data   
+☐ Django settings-base.py & new folder   
+☐ https let's encrypt   
+☐ will probably only use Django as an API with rest_framework & keep React completely independent & served by nginx   
+☐ many more   
+☐    
+☐      
 
 
 
@@ -66,7 +68,7 @@ docker-compose up
 ./prod up
 ```   
 
-How open open bash in running containers  
+How open bash in running containers  
 ```   
 # open new terminal window in project folder
 

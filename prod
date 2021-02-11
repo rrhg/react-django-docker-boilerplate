@@ -85,6 +85,7 @@ intro() {
     echo "    ${BOLD}afterinit${NORMAL}       repeat help message displayed after init command is complete."
     echo "    ${BOLD}up${NORMAL}              docker-compose -f docker-compose-prod.yaml up"
     echo "    ${BOLD}down${NORMAL}            docker-compose -f docker-compose-prod.yaml down"
+    echo "    ${BOLD}down -v${NORMAL}         Warning! -v deletes database volume & data"
     echo "                                    (down deletes containers & network, but no volumes)"
     echo "    ${BOLD}restart${NORMAL}         down + up  "
     echo "    ${BOLD}stop${NORMAL}            docker-compose -f docker-compose-prod.yaml stop"

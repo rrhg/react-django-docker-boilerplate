@@ -23,6 +23,8 @@ services:
     ports:
       - '127.0.0.1:5432:5432'
     # restart: unless-stopped
+    volumes:
+      - database:/var/lib/postgresql/data
   backend:
     # where to find Dockerfile
     build:
@@ -53,6 +55,9 @@ services:
       - ./prod:/backend/prod:ro
       # - ./backend/backups:/backend/backups:Z
       # - ./backend/logs:/backend/logs:z
+
+volumes:
+  database:
 
 # fix for: ERROR: could not find an available, non-overlapping IPv4 address pool among the defaults to assign to the network
 # happens sometimes when your laptop vpn services use same addresses as docker network

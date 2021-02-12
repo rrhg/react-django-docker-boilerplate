@@ -137,6 +137,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# static files (django admin) will be copied here by collecstatic
+STATIC_ROOT = "./django-static/"
+
 # Dangerous - allows all
 CORS_ALLOW_ALL_ORIGINS = True
 # use this instead with your host

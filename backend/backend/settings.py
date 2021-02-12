@@ -137,7 +137,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
 # Dangerous - allows all
 CORS_ALLOW_ALL_ORIGINS = True
 # use this instead with your host

@@ -51,7 +51,7 @@ services:
       # Superuser
       - SUPERUSER_USERNAME=Admin
       - SUPERUSER_EMAIL=admin@example.com
-      - SUPERUSER_PASSWORD=password
+      - DJANGO_SUPERUSER_PASSWORD=password
       - DJANGO_SETTINGS_MODULE=backend.settings
     ports:
       # Map port 8000 in the container to port 8000 on the host

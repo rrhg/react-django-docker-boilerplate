@@ -21,12 +21,6 @@ required_ports=($port_postgresql $port_django)
 project_name=$(basename "${PWD}")
 
 
-# Default superuser
-username="Admin"
-password="password"
-email="admin@example.com"
-
-
 # Utility functions used by action commands
 error() {
     echo -e "${RED}Error:${NORMAL} $1"
@@ -159,11 +153,11 @@ init_frontend() {
 init_backend() {
     require_in_docker
     wait_for_db
-    # migrate the database
     python manage.py makemigrations
     python manage.py migrate
-    # create superuser Admin with password "password"
-    python manage.py createsuperuser --username $username --email $email --password $password
+    
+    # password: Django uses env variable DJANGO_SUPERUSER_PASSWORD for the superuser password
+    python manage.py createsuperuser --username "$SUPERUSER_USERNAME" --email "$SUPERUSER_EMAIL" --no-input
 
     # display after init message
     echo
@@ -182,8 +176,8 @@ after_init_message() {
     echo "DJANGO server will be available in the browser at http://127.0.0.1:${port_django}"
     echo
     echo "Default Django superuser has been created with this username and password:"
-    echo "Username:    $username"
-    echo "Password:    $password"
+    echo "Username:    $SUPERUSER_USERNAME"
+    echo "Password:    $DJANGO_SUPERUSER_PASSWORD"
     echo
     echo "To connect to development database use following credentials:"
     echo "User:         django"

@@ -194,7 +194,7 @@ after_init_message() {
 npm_build() {
     #creates build folder in frontend/ with production ready files created by Create-react-app
     docker-compose run --rm frontend npm run build
-    collectstatic
+    collectstatic # just in case there were django admin static files changes or rest_framework web browsable api style changes
 }
 
 

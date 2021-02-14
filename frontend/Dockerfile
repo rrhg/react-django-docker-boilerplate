@@ -19,7 +19,15 @@ RUN apt-get update && apt-get install -y \
 # How change user for node image : https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md
 # So that `npm build` would create files with same user as host, so that they can be edited from host (like adding static files from django admin)  
 RUN groupmod -g "${GROUP_ID}" node && usermod -u "${USER_ID}" -g "${GROUP_ID}" node
-RUN usermod -d "/home/${USER_NAME}" -l "${USER_NAME}" node
+
+# gives error can not create home directory
+# RUN usermod -d "/home/${USER_NAME}" -l "${USER_NAME}" node
+
+# only change name of user
+RUN usermod -l "${USER_NAME}" node
+
+# this says user id is already in use
+# RUN adduser --disabled-password --gecos '' --uid "${USER_ID}" --gid "${GROUP_ID}" "${USER_NAME}"
 
 USER "${USER_NAME}"
 

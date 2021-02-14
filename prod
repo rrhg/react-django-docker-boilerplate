@@ -270,19 +270,19 @@ run_bash_postgres() {
 
 # Shortcut for docker-compose run --rm backend python manage.py
 run_managepy() {
-    docker-compose run --rm backend python manage.py "${@:2}"
+    docker-compose -f docker-compose-prod.yaml run --rm backend python manage.py "${@:2}"
 }
 
 
 # Shortcut for docker-compose run --rm backend...
 docker_run() {
-    docker-compose run --rm backend "${@:2}"
+    docker-compose -f docker-compose-prod.yaml run --rm backend "${@:2}"
 }
 
 
 # Shortcut for psql
 run_psql() {
-    docker-compose run --rm backend ./dev psql_in_docker
+    docker-compose -f docker-compose-prod.yaml run --rm backend ./dev psql_in_docker
 }
 
 

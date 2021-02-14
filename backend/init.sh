@@ -16,11 +16,5 @@ sleep 3
 ./manage.py makemigrations
 ./manage.py migrate
 
-# create superuser Admin with password "password"
-./manage.py createsuperuser --username $username --email $email --password $password
-
-# maybe not needed since this will not use Django templates. It will only use Rest Framewok as an API.
-# but may be used for admin and rest_framework 
-#./manage.py collectstatic --noinput
-
-# gunicorn backend.wsgi --bind 0.0.0.0:3031 --workers 4 --threads 4
+# password: Django uses env variable DJANGO_SUPERUSER_PASSWORD for the superuser password
+./manage.py createsuperuser --username "$SUPERUSER_USERNAME" --email "$SUPERUSER_EMAIL" --no-input

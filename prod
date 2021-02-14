@@ -23,11 +23,6 @@ project_name=$(basename "${PWD}")
 
 IN_DOCKER=${IN_DOCKER}
 
-# Default superuser
-username="Admin"
-password="password"
-email="admin@example.com"
-
 
 # Utility functions used by action commands
 error() {

@@ -2,7 +2,12 @@ version: "3.0"
 services:
   frontend:
     # where to find Dockerfile
-    build: ./frontend/
+    build:
+      context: ./frontend
+      args:
+        - USER_ID
+        - GROUP_ID
+        - USER_NAME
     command: npm start
     #environment:
     ports:
@@ -13,7 +18,8 @@ services:
     volumes:
       # Map in the entire /frontend folder into the container
       # This makes sure files in the container updates on the fly as we were working locally
-      - ./frontend:/frontend:Z
+      # - ./frontend:/frontend:Z
+      - ./frontend:/frontend
       # allow to call ./dev init_in_docker (bash script) from inside container
       - ./dev:/frontend/dev:Z
 
@@ -60,6 +66,7 @@ services:
       - ./backend:/backend:Z
       # allow to call ./dev init_in_docker (bash script) from inside container
       - ./dev:/backend/dev:Z
+
 
 # fix for: ERROR: could not find an available, non-overlapping IPv4 address pool among the defaults to assign to the network
 # happens sometimes when your laptop vpn services use same addresses as docker network

@@ -17,6 +17,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+BOILERPLATE_DIR = BASE_DIR.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -135,7 +136,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+
 STATIC_URL = '/static/'
+
+
+# static files (django admin & rest_framework) will be copied here by collectstatic
+STATIC_ROOT = './django-static/'
+
 
 # Dangerous - allows all
 CORS_ALLOW_ALL_ORIGINS = True

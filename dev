@@ -198,8 +198,17 @@ after_init_message() {
 
 
 npm_build() {
-    #creates build folder in frontend
+    #creates build folder in frontend/ with production ready files created by Create-react-app
     docker-compose run --rm frontend npm run build
+    collectstatic
+}
+
+
+# this will probably never be used again if the Django will only be used as rest_framework API, but just in case, this also copy the files to frontend/build
+collectstatic() {
+    docker-compose -f docker-compose.yaml run --rm backend python manage.py collectstatic --no-input
+    # So that nginx can serve those static files also. There's no name collition bc it has 2 folders, admin & rest_framework. If you want to add static files for apps with django template system, this could be a problem
+    cp -r -a backend/django-static/* frontend/build/static/ 
 }
 
 
@@ -281,16 +290,10 @@ clear() {
 rebuild() {
     down $@
 
-    # docs/pass-host-user-to-backend 
-    export USER_ID="$(id -u)"  
-    export GROUP_ID="$(id -g)"
-    export USER_NAME="$(id -un)"
-  
     docker-compose build --pull --force-rm "${@:2}"
     # If you change a service’s Dockerfile or the contents of its build directory, run docker-compose build to rebuild it.
     # --force-rm              Always remove intermediate containers
     #--pull                  Always attempt to pull a newer version of the image.
-
 }
 
 
@@ -390,6 +393,8 @@ if [[ $1 ]]; then
         run_managepy $@
     elif [[ $1 = "npm-build" ]]; then
         npm_build $@
+    elif [[ $1 = "collectstatic" ]]; then
+        collectstatic
     elif [[ $1 = "run" ]]; then
         docker_run $@
     elif [[ $1 = "psql" ]]; then

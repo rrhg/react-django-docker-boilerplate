@@ -9,7 +9,8 @@
 /coverage
 
 # production
-/build
+# /build
+# in this boilerplate, /build content will be updated with command `./dev npm-build`.  Then the content will be uploaded to origin & then cloned to production host. If it's not, then in production, for some reason(maybe nginx user?), the folder is created with owner root(when the bind mount is created). This cause a permissions problem & would need to use sudo manually to copy the files.
 
 # misc
 .DS_Store

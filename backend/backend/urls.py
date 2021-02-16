@@ -17,8 +17,6 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    # this project will probably only use rest_framework as an API
-    # path('', include('sampleapp.urls')),
     path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 ]

@@ -20,7 +20,8 @@ Credit: many ideas come from [misago](https://github.com/rafalp/Misago) & [saasi
    1. frontend (with command npm start)
       1. [Create-react-app](https://github.com/facebook/create-react-app) -> localhost:3000
    1. backend (with command python manage.py runserver)
-      1. rest-framework web browsable API -> localhost:8000/api 
+      1. rest-framework web browsable API -> localhost:8000/api
+      1. Django admin  ->  localhost:8000/admin 
    1. postgres   
 1. Check your terminal & wait for both servers to be ready
    1. In slow environments give them some time & reload browser  
@@ -33,7 +34,7 @@ Credit: many ideas come from [misago](https://github.com/rafalp/Misago) & [saasi
    1. `git clone https://github.com/<username>/react-django-docker-boilerplate.git myproject`
    1. `cd myproject`
    1. `./prod init`
-      1. frontend build folder will be copied to nginx
+      1. frontend /build folder will be copied to nginx
    1. `./prod up` or `docker-compose up`    
 
 Todos:   

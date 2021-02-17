@@ -27,8 +27,8 @@ services:
     image: postgres:10
     # restart: unless-stopped # maybe not neeeded in development
     environment:
-      - POSTGRES_USER=django
-      - POSTGRES_PASSWORD=django
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
     ports:
       - '127.0.0.1:5432:5432'
     # restart: unless-stopped
@@ -42,17 +42,15 @@ services:
         - USER_NAME
     command: python manage.py runserver 0.0.0.0:8000
     environment:
-      # Postgres
-      - POSTGRES_USER=django
-      - POSTGRES_PASSWORD=django
-      - POSTGRES_DB=django
-      - POSTGRES_HOST=postgres
-      - POSTGRES_TEST_DB=django_test
-      # Superuser
-      - SUPERUSER_USERNAME=Admin
-      - SUPERUSER_EMAIL=admin@example.com
-      - DJANGO_SUPERUSER_PASSWORD=password
-      - DJANGO_SETTINGS_MODULE=backend.settings
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_HOST
+      - POSTGRES_TEST_DB
+      - SUPERUSER_USERNAME
+      - SUPERUSER_EMAIL
+      - DJANGO_SUPERUSER_PASSWORD
+      - DJANGO_SETTINGS_MODULE
     ports:
       # Map port 8000 in the container to port 8000 on the host
       # This way we can access Django through http://localhost:8000

@@ -102,7 +102,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+# .env # will contain docker-compose env files with development & production variables 
 .venv
 env/
 venv/

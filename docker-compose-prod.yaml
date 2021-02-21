@@ -33,17 +33,15 @@ services:
       dockerfile: Dockerfile-prod
     command: gunicorn backend.wsgi --bind 0.0.0.0:3031 --workers 4 --threads 4
     environment:
-      # Postgres
-      - POSTGRES_USER=django
-      - POSTGRES_PASSWORD=django
-      - POSTGRES_DB=django
-      - POSTGRES_HOST=postgres
-      - POSTGRES_TEST_DB=django_test
-      # Superuser
-      - SUPERUSER_USERNAME=Admin
-      - SUPERUSER_EMAIL=admin@example.com
-      - DJANGO_SUPERUSER_PASSWORD=password
-      - DJANGO_SETTINGS_MODULE=backend.settings-prod
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_HOST
+      - POSTGRES_TEST_DB
+      - SUPERUSER_USERNAME
+      - SUPERUSER_EMAIL
+      - DJANGO_SUPERUSER_PASSWORD
+      - DJANGO_SETTINGS_MODULE=backend.settings.prod
     ports:
       - "3031:3031"
     depends_on:

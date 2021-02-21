@@ -38,9 +38,9 @@ Credit: many ideas come from [misago](https://github.com/rafalp/Misago) & [saasi
    1. `./prod up` or `docker-compose up`    
 
 Todos:   
-☐ env files   
-☐ postgres bind mount volumen for data   
-☐ Django settings-base.py & new folder   
+☑ .env file   
+☑ postgres bind mount volumen in production for data   
+☑ Django use multiple settings files pattern   
 ☐ https let's encrypt   
 ☐ will probably only use Django as an API with rest_framework & keep React completely independent & served by nginx   
 ☐ many more   

@@ -1,5 +1,8 @@
-import os
+"""
+Base settings to build other settings files upon.
+"""
 
+import os
 
 """
 Django settings for backend project.
@@ -15,23 +18,15 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd4vt6f$sgkmu&uave4gbk%9fizt-v&6%j6kd0v#*94y_=z2=8%'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['backend','localhost']
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
-# Application definition
+BOILERPLATE_DIR = BASE_DIR.parent
 
+
+# Apps used in both development & production
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,6 +39,8 @@ INSTALLED_APPS = [
     'api',
 ]
 
+
+# Middleware used in both development & production
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -79,12 +76,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-    # 'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-# }
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -133,21 +124,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+
 STATIC_URL = '/static/'
 
-# Dangerous - allows all
-CORS_ALLOW_ALL_ORIGINS = True
-# use this instead with your host
-# CORS_ALLOWED_ORIGINS = [
-#   'http://localhost',
-#   'http://127.0.0.1',
-# #   'http://localhost:3000', # react server host
-# ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        # disable Browsable API in production
-        #'rest_framework.renderers.BrowsableAPIRenderer',
-    ]
-}
+# static files (django admin & rest_framework) will be copied here by collectstatic
+STATIC_ROOT = './django-static/'

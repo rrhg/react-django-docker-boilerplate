@@ -50,7 +50,7 @@ services:
       - SUPERUSER_USERNAME
       - SUPERUSER_EMAIL
       - DJANGO_SUPERUSER_PASSWORD
-      - DJANGO_SETTINGS_MODULE
+      - DJANGO_SETTINGS_MODULE=backend.settings.dev
     ports:
       # Map port 8000 in the container to port 8000 on the host
       # This way we can access Django through http://localhost:8000

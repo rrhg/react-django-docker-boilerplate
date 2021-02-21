@@ -9,7 +9,6 @@ services:
         - GROUP_ID
         - USER_NAME
     command: npm start
-    #environment:
     ports:
       # Map port 3000 in the container to port 3000 on the host
       # This way we can access create-react-app through http://localhost:3000
@@ -26,12 +25,10 @@ services:
   postgres:
     image: postgres:10
     # restart: unless-stopped # maybe not neeeded in development
-    environment:
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
+    env_file:
+      - .env/dev
     ports:
       - '127.0.0.1:5432:5432'
-    # restart: unless-stopped
   backend:
     build:
       context: ./backend
@@ -41,16 +38,8 @@ services:
         - GROUP_ID
         - USER_NAME
     command: python manage.py runserver 0.0.0.0:8000
-    environment:
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
-      - POSTGRES_HOST
-      - POSTGRES_TEST_DB
-      - SUPERUSER_USERNAME
-      - SUPERUSER_EMAIL
-      - DJANGO_SUPERUSER_PASSWORD
-      - DJANGO_SETTINGS_MODULE=backend.settings.dev
+    env_file:
+      - .env/dev
     ports:
       # Map port 8000 in the container to port 8000 on the host
       # This way we can access Django through http://localhost:8000

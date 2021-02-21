@@ -18,9 +18,8 @@ services:
   postgres:
     image: postgres:10
     restart: unless-stopped
-    environment:
-      - POSTGRES_USER=django
-      - POSTGRES_PASSWORD=django
+    env_file:
+      - .env/prod
     ports:
       - '127.0.0.1:5432:5432'
     # restart: unless-stopped
@@ -32,16 +31,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile-prod
     command: gunicorn backend.wsgi --bind 0.0.0.0:3031 --workers 4 --threads 4
-    environment:
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
-      - POSTGRES_HOST
-      - POSTGRES_TEST_DB
-      - SUPERUSER_USERNAME
-      - SUPERUSER_EMAIL
-      - DJANGO_SUPERUSER_PASSWORD
-      - DJANGO_SETTINGS_MODULE=backend.settings.prod
+    env_file:
+      - .env/prod
     ports:
       - "3031:3031"
     depends_on:

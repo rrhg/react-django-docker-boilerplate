@@ -30,17 +30,21 @@ Credit: many ideas come from [misago](https://github.com/rafalp/Misago) & [saasi
 1. `./dev npm-build`
 1. `git push`
 1. In production:
+   1. Your VPS(Virtual Private Server) should have docker & docker-compose.
+      1. A good option is a $5/mo [digitalocean docker droplet](https://marketplace.digitalocean.com/apps/docker)
    1. `ssh user@<my_vps_ip>`
    1. `git clone https://github.com/<username>/react-django-docker-boilerplate.git myproject`
    1. `cd myproject`
    1. `./prod init`
-      1. frontend /build folder will be copied to nginx
    1. `./prod up` or `docker-compose up`    
 
 Todos:   
 ☑ .env file   
 ☑ postgres bind mount volumen in production for data   
 ☑ Django use multiple settings files pattern   
+☐ handle Django secret key in production   
+☐ handle allowed hosts & CORS in production   
+☐    
 ☐ https let's encrypt   
 ☐ will probably only use Django as an API with rest_framework & keep React completely independent & served by nginx   
 ☐ many more   

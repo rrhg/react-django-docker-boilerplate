@@ -293,7 +293,7 @@ rebuild() {
 
 rebuildup() {
     rebuild $@
-    init $@
+    init $@  # in development, maybe we should also run init because all database data is not been saved, not sure if should use a volume for development.
     up $@
 }
 

@@ -161,7 +161,7 @@ down() {
 
 restart() {
     down $@
-    # init $@
+    # init $@ # no init in production. Database data is saved in bind mount volume (no need for migrations, create another superuser)
     up $@
 }
 
@@ -236,7 +236,6 @@ rebuild() {
 
 rebuildup() {
     rebuild $@
-    init $@
     up $@
 }
 

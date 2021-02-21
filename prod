@@ -150,7 +150,7 @@ init() {
 
 
 up() {
-    docker-compose -f docker-compose-prod.yaml up "${@:2}"
+    docker-compose -f docker-compose-prod.yaml up --detach "${@:2}"
 }
 
 

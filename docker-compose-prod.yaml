@@ -33,6 +33,7 @@ services:
     command: gunicorn backend.wsgi --bind 0.0.0.0:3031 --workers 4 --threads 4
     env_file:
       - .env/prod
+      - .env/prod-django-secret-key
     ports:
       - "3031:3031"
     depends_on:

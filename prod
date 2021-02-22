@@ -143,9 +143,18 @@ init() {
     # --force-rm = Always remove intermediate containers
     docker-compose -f docker-compose-prod.yaml build --pull --force-rm "${@:2}"
 
+    # create secret key and add it to env file
+    new_django_secret
+
     docker-compose -f docker-compose-prod.yaml run --rm backend ./init.sh
 
     after_init_message
+}
+
+
+new_django_secret() {
+    secret_key="$(docker-compose -f docker-compose-prod.yaml run --rm backend bash -c "python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'")"
+    echo "DJANGO_SECRET_KEY=${secret_key}" > .env/prod-django-secret-key
 }
 
 
@@ -161,7 +170,7 @@ down() {
 
 restart() {
     down $@
-    # init $@ # no init in production. Database data is saved in bind mount volume (no need for migrations, create another superuser)
+    # init $@ # no init in production. Database data is saved in bind mount volume (no need to run init() again for migrations, create another superuser)
     up $@
 }
 
@@ -314,6 +323,8 @@ if [[ $1 ]]; then
         down $@
     elif [[ $1 = "stop" ]]; then
         stop $@
+    elif [[ $1 = "secret" ]]; then
+        new_django_secret $@
     elif [[ $1 = "test" ]]; then
         test $@
     elif [[ $1 = "bash-backend" ]]; then

@@ -102,13 +102,20 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-# .env # will contain docker-compose env files with development & production variables 
+
+# will contain docker-compose env files with development & production variables
+# .env  
+
+# environment variable that will be created in production 
+.env/prod-django-secret-key 
+
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+
 
 # Spyder project settings
 .spyderproject

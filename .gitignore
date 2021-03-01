@@ -107,7 +107,7 @@ celerybeat.pid
 # .env  
 
 # environment variable that will be created in production 
-.env/prod-django-secret-key 
+# .env/prod-django-secret-key 
 
 .venv
 env/

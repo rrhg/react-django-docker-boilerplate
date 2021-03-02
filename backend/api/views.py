@@ -1,9 +1,14 @@
+from django.contrib.auth.models import User
 from rest_framework import viewsets
-from rest_framework.permissions import AllowAny
 from .models import APIModel
 from .serializers import APIModelSerializer
+# from .serializers import APIModelSerializer, UserSerializer
 
 class APIModelViewSet(viewsets.ModelViewSet):
     queryset = APIModel.objects.all()
     serializer_class = APIModelSerializer
-    permission_classes = [AllowAny]
+
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+

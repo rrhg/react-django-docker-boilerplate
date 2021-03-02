@@ -18,10 +18,10 @@ Credit: many ideas come from [misago](https://github.com/rafalp/Misago) & [saasi
 1. `./dev up` or `docker-compose up`
 1. 3 containers will be started:   
    1. frontend (with command npm start)
-      1. [Create-react-app](https://github.com/facebook/create-react-app) -> localhost:3000
+      1. localhost:3000 -> [Create-react-app](https://github.com/facebook/create-react-app) (Completely decoupled from Django Rest Framework backend)
    1. backend (with command python manage.py runserver)
-      1. rest-framework web browsable API -> localhost:8000/api
-      1. Django admin  ->  localhost:8000/admin 
+      1. localhost:8000/api -> [Django rest-framework web browsable API](https://www.django-rest-framework.org/topics/browsable-api/)
+      1. localhost:8000/admin -> Django admin
    1. postgres   
 1. Check your terminal & wait for both servers to be ready
    1. In slow environments give them some time & reload browser  
@@ -42,11 +42,11 @@ Todos:
 ☑ .env file   
 ☑ postgres bind mount volumen in production for data   
 ☑ Django use multiple settings files pattern   
-☐ handle Django secret key in production   
+☑ handle Django secret key in production   
 ☐ handle allowed hosts & CORS in production   
-☐    
+☐ users & auth    
 ☐ https let's encrypt   
-☐ will probably only use Django as an API with rest_framework & keep React completely independent & served by nginx   
+☑ will probably only use Django as an API with rest_framework & keep React completely independent & served by nginx   
 ☐ many more   
 ☐    
 ☐      

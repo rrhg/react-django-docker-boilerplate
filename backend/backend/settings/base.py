@@ -28,6 +28,7 @@ BOILERPLATE_DIR = BASE_DIR.parent
 
 # Apps used in both development & production
 INSTALLED_APPS = [
+    'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -36,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
-    'api',
 ]
 
 

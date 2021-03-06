@@ -55,7 +55,7 @@ const Polls = props => {
               id = {question.id}
             </Card.Text>
             <Card.Text>
-              Supporting text.
+              Supporting text
             </Card.Text>
           </Card.Body>
         </Card>

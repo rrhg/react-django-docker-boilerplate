@@ -9,8 +9,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import logo from './logo.svg'
 import {Provider} from './Context'
-import GetDjangoSampleModel from './components/GetDjangoSampleModel'
-import CreateDjangoSampleModel from './components/CreateDjangoSampleModel'
+import Polls from './components/Polls'
+import About from './components/About'
+import CreateQuestion from './components/CreateQuestion'
 import './App.css'
 
 export default function App() {
@@ -24,10 +25,10 @@ export default function App() {
               <Link to="/">Create-react-app inlcluded component</Link>
             </li>
             <li>
-              <Link to="/get">Get Django SampleModel</Link>
+              <Link to="/polls">Polls Demo App</Link>
             </li>
             <li>
-              <Link to="/create">Create Django SampleModel</Link>
+              <Link to="/about">About</Link>
             </li>
           </ul>
         </nav>
@@ -35,11 +36,14 @@ export default function App() {
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/get">
-            <GetDjangoSampleModel />
+          <Route path="/polls">
+            <Polls />
+          </Route>
+          <Route path="/about">
+            <About />
           </Route>
           <Route path="/create">
-            <CreateDjangoSampleModel />
+            <CreateQuestion />
           </Route>
           <Route path="/">
             <Home />

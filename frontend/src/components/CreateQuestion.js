@@ -5,9 +5,9 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 
-const GetDjangoSampleModel = props => {
+const CreateQuestion = props => {
 
-  const [title, setTitle] = React.useState("")
+  const [questionText, setQuestionText] = React.useState("")
   const [response, setResponse] = React.useState({})
 
   const context = React.useContext(Context)
@@ -16,8 +16,8 @@ const GetDjangoSampleModel = props => {
   const onPostReq = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    const objectToSend = {title:title}
-    fetch(backendHost + "/api/apimodel/", {
+    const objectToSend = {question_text:questionText}
+    fetch(backendHost + "/api/polls/questions/", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -40,14 +40,14 @@ const GetDjangoSampleModel = props => {
   <Container>
     <Jumbotron>
     <h2 className="header">
-    ...Let's create a SampleModel in Django backend by making a post request to /api/apimodel endpoint
+    ...Let's create a Question in Django backend by making a post request to /api/polls/questions endpoint
     </h2>
 
     <Form onSubmit={onPostReq}>
     <Form.Group>
     {/* <Form.Group controlId="formBasicEmail"> */}
-        <Form.Label>SampleModel Title</Form.Label>
-        <Form.Control onChange={(e)=>setTitle(e.target.value)} value={title} type="text" placeholder="Enter title" />
+        <Form.Label>Question Title</Form.Label>
+        <Form.Control onChange={(e)=>setQuestionText(e.target.value)} value={questionText} type="text" placeholder="Enter questionText" />
         <Form.Text className="text-muted">
         Weird titles ar Ok
         </Form.Text>
@@ -70,4 +70,4 @@ const GetDjangoSampleModel = props => {
   )
 }
 
-export default GetDjangoSampleModel
+export default CreateQuestion

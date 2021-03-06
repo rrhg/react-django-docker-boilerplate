@@ -4,10 +4,12 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Card from 'react-bootstrap/Card';
+import {Link} from "react-router-dom"
 
-const GetDjangoSampleModel = props => {
 
-  const [models, setModels] = React.useState([])
+const Polls = props => {
+
+  const [questions, setQuestions] = React.useState([])
 
   const context = React.useContext(Context)
   const backendHost = context.backendHost
@@ -16,12 +18,15 @@ const GetDjangoSampleModel = props => {
     event.preventDefault();
     event.stopPropagation();
 
-    fetch(backendHost + "/api/apimodel/")
-      .then(res => res.json())
+    fetch(backendHost + "/api/polls/questions/")
+      .then(res => {
+        console.log(res)
+        return( res.json())
+      })
       .then(
-        (models) => {
-          console.log(models)
-          setModels(models)
+        (questions) => {
+          console.log(questions)
+          setQuestions(questions)
         },
         (error) => {
           console.log(error)
@@ -32,19 +37,22 @@ const GetDjangoSampleModel = props => {
   return (
   <Container>
     <Jumbotron>
-    <h3 className="header">
-    ..Let's get all Django Sample Models by making a get request to /api/apimodel endpoint
-    </h3>
+    <h2>Polls Demo APP</h2>
+    <h4>Create a new  <Link to="/create">Question</Link></h4>
+    <h4>or</h4>
+    <h4 className="header">
+     Get all Question by making a get request to /api/polls/questions endpoint
+    </h4>
     <Button variant="primary" onClick={onGetModels}>
         Get
     </Button>
-    {models.map(model => (
-      <div key={model.id}>
+    {questions.map(question => (
+      <div key={question.id}>
         <Card>
-          <Card.Header>{model.title}</Card.Header>
+          <Card.Header>{question.question_text}</Card.Header>
           <Card.Body>
             <Card.Text>
-              id = {model.id}
+              id = {question.id}
             </Card.Text>
             <Card.Text>
               Supporting text.
@@ -59,4 +67,4 @@ const GetDjangoSampleModel = props => {
   )
 }
 
-export default GetDjangoSampleModel
+export default Polls

@@ -192,12 +192,16 @@ after_init_message() {
 
 
 npm_build() {
-    #creates build folder in frontend/ with production ready files created by Create-react-app
-    docker-compose run --rm frontend npm run build
+    docker-compose run --rm frontend npm run build #creates build folder in frontend/ with production ready files created by Create-react-app
+
     collectstatic # just in case there were django admin static files changes or rest_framework web browsable api style changes
 
+<<<<<<< HEAD
 
     git add -f frontend/build
+=======
+    git add -f frontend/build # git is not tracking new files in frontend/build. See docs/errors for more details
+>>>>>>> build-squash
 }
 
 

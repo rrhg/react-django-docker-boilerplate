@@ -28,7 +28,7 @@ export default function App() {
               <Link to="/polls">Polls Demo App</Link>
             </li>
             <li>
-              <Link to="/about">About. </Link>
+              <Link to="/about">About </Link>
             </li>
           </ul>
         </nav>

@@ -13,6 +13,7 @@ This will:
 1. Create & run containers
 
 
+
 ```   
 # Error in browser console
 Uncaught SyntaxError: expected expression got '<'
@@ -20,6 +21,15 @@ Uncaught SyntaxError: expected expression got '<'
 Apprently this worked but now I'm geeting "500 Internal Server Error"
 `git add -f frontend/build/`   
 
+But next time run `./dev npm-build` console gave same error again
+
+did 
+`git add -f frontend/build/static`
+`git add -f frontend/build/static/admin`
+`git add -f frontend/build/static/css`
+`git add -f frontend/build/static/js`
+`git add -f frontend/build/static/media`
+`git add -f frontend/build/static/rest_framework`
 
 
 

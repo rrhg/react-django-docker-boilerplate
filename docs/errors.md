@@ -13,6 +13,15 @@ This will:
 1. Create & run containers
 
 
+```   
+# Error in browser console
+Uncaught SyntaxError: expected expression got '<'
+```   
+Apprently this worked but now I'm geeting "500 Internal Server Error"
+`git add -f frontend/build/`   
+
+
+
 
 ```   
 Error response from daemon: Get https://registry-1.docker.io/v2/: dial tcp: lookup registry-1.docker.io…i/o timeout

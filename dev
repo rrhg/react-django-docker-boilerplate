@@ -196,12 +196,7 @@ npm_build() {
 
     collectstatic # just in case there were django admin static files changes or rest_framework web browsable api style changes
 
-<<<<<<< HEAD
-
-    git add -f frontend/build
-=======
     git add -f frontend/build # git is not tracking new files in frontend/build. See docs/errors for more details
->>>>>>> build-squash
 }
 
 

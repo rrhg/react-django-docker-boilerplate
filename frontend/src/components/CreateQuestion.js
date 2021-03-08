@@ -25,7 +25,11 @@ const CreateQuestion = props => {
       },
       body: JSON.stringify(objectToSend)
     })
-    .then(res => res.json())
+    .then(res => {
+                   console.log('post response is :')
+                   console.log(res)
+                   return res.json()
+    })
     .then(
         (result) => {
           setResponse(result)

@@ -1,0 +1,31 @@
+FROM node:12
+
+# vars coming from docker-compose.yaml & been exported in ./dev bash utility
+ARG USER_ID
+ARG GROUP_ID
+ARG USER_NAME
+
+# only available in a running container, not in image creation
+ENV IN_FRONTEND_DOCKER 1
+
+RUN apt-get update && apt-get install -y \
+    vim
+
+#COPY package.json . # for production
+#RUN npm install     # done in ./dev utility so that node_modules folder is included in the bind mount volumen. Also we hack the server to stop clearing the console
+#COPY . /frontend # for production
+
+
+# For some reason, when in a digitalocean dropplet, these two commands are failing
+# RUN groupmod -g "${GROUP_ID}" node && usermod -u "${USER_ID}" -g "${GROUP_ID}" node
+# RUN usermod -l "${USER_NAME}" node
+
+# this command was not failing. Might be useful in the future
+# USER "${USER_NAME}"
+
+WORKDIR /frontend
+
+
+# no need to run these commands in production because the image will only be used to run `npm install` & `npm run build`
+# EXPOSE 3000
+#CMD npm start

@@ -264,7 +264,9 @@ npm_build() {
     export GROUP_ID="$(id -g)"
     export USER_NAME="$(id -un)"
 
-    docker build --build-arg USER_ID --build-arg GROUP_ID --build-arg USER_NAME --pull --force-rm -t frontend_prod ./frontend
+    docker build -f frontend/Dockerfile-prod --build-arg USER_ID --build-arg GROUP_ID --build-arg USER_NAME --pull --force-rm -t frontend_prod ./frontend
+
+    docker run --rm -v "$(pwd)"/frontend:/frontend frontend_prod npm install # maybe this should be done inside image
 
     docker run --rm -v "$(pwd)"/frontend:/frontend frontend_prod npm run build #creates build folder in frontend/ with production ready files created by Create-react-app
 

@@ -257,9 +257,9 @@ collectstatic() {    # run Django collecstatic command & copy them to the static
 
 
 npm_build() {
-    # create & run an image for the purpose of recreating the production frontend static files, make them available to nginx & do the same for django static files 
+    # create & run a frontend image in production for the purpose of recreating the production frontend static files(production build created by `npm run build`), make them available to nginx & do the same for django static files 
 
-    # docs/pass-host-user-to-backend # this might not be necessary in production. Should we have a different Dockerfile for production ?
+    # docs/pass-host-user-to-backend # this might not be necessary in production. Should we have a different Dockerfile for production ? But will the files created have the user & group (permissions) that would allow to be copied to another dir or to another image ??
     export USER_ID="$(id -u)"  
     export GROUP_ID="$(id -g)"
     export USER_NAME="$(id -un)"

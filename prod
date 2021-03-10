@@ -249,6 +249,32 @@ rebuildup() {
 }
 
 
+collectstatic() {    # run Django collecstatic command & copy them to the static dir that nginx is using to serve static files 
+    docker run --rm --env-file .env/prod --env-file .env/prod-django-secret-key "${project_name}_backend" python manage.py collectstatic --no-input # reusing backend image to run collect static in production
+
+    cp -r -a backend/django-static/* frontend/build/static/ # So that nginx can serve those static files also. There's no name collition bc it has 2 folders, admin & rest_framework. If you want to add static files for apps with django template system, this could be a problem
+}
+
+
+npm_build() {
+    # create & run an image for the purpose of recreating the production frontend static files, make them available to nginx & do the same for django static files 
+
+    # docs/pass-host-user-to-backend # this might not be necessary in production. Should we have a different Dockerfile for production ?
+    export USER_ID="$(id -u)"  
+    export GROUP_ID="$(id -g)"
+    export USER_NAME="$(id -un)"
+
+    docker build --build-arg USER_ID --build-arg GROUP_ID --build-arg USER_NAME --pull --force-rm -t frontend_prod ./frontend
+
+    docker run --rm -v "$(pwd)"/frontend:/frontend frontend_prod npm run build #creates build folder in frontend/ with production ready files created by Create-react-app
+
+    collectstatic # just in case there were django admin static files changes or rest_framework web browsable api style changes
+
+    # should we do this in production ? 
+    # git add -f frontend/build # git is not tracking new files in frontend/build. See docs/errors for more details
+}
+
+
 # Run tests suite
 test() {
     docker-compose -f docker-compose-prod.yaml run --rm backend pytest "${@:2}"
@@ -335,6 +361,10 @@ if [[ $1 ]]; then
         run_bash_postgres
     elif [[ $1 = "manage.py" ]]; then
         run_managepy $@
+    elif [[ $1 = "npm-build" ]]; then
+        npm_build $@
+    elif [[ $1 = "collectstatic" ]]; then
+        collectstatic
     elif [[ $1 = "run" ]]; then
         docker_run $@
     elif [[ $1 = "deploy" ]]; then

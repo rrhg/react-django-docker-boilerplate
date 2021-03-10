@@ -22,7 +22,7 @@ export default function App() {
         <nav>
           <ul>
             <li>
-              <Link to="/">Create-react-app inlcluded component</Link>
+              <Link to="/">Create-react-app included component</Link>
             </li>
             <li>
               <Link to="/polls">Polls Demo App</Link>

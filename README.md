@@ -27,8 +27,6 @@ Credit: many ideas come from [misago](https://github.com/rafalp/Misago) & [saasi
    1. In slow environments give them some time & reload browser  
 1. Make your changes
    1. [Create-react-app](https://github.com/facebook/create-react-app) auto reload feature should work as expected
-1. `./dev npm-build`
-1. `git commit -m "Add React production static files to frontend/build directory"`
 1. `git push`
 1. In production:
    1. Your VPS(Virtual Private Server) should have docker & docker-compose.
@@ -66,11 +64,12 @@ docker-compose run --rm backend python manage.py startapp myapp
 
 How stop servers & run them again:   
 ```
+# in local development
 <ctrl> c
-docker-compose up
-# or
 ./dev up
+
 # in production
+./prod stop
 ./prod up
 ```   
 

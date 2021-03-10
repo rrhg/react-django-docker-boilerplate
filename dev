@@ -83,7 +83,7 @@ intro() {
     echo "    ${BOLD}bash-postgres${NORMAL}   starts bash session inside running postgre container."
     echo "    ${BOLD}docker_delete_all${NORMAL} Warning! delete everything installed by docker(volumes,images,containers,networks) requires sudo password"
     echo
-    echo "    ${BOLD}npm-build${NORMAL}       runs \"npm run build\" inside frontend container, which bundles the production ready static files into the build folder"
+    # echo "    ${BOLD}npm-build${NORMAL}       runs \"npm run build\" inside frontend container, which bundles the production ready static files into the build folder"
     # echo
     # echo "    Both init and rebuild args can be followed with any number of extra args and options that should be appended to docker-compose build."
     # echo

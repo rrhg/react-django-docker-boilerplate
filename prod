@@ -95,6 +95,7 @@ intro() {
     echo "    ${BOLD}bash-nginx${NORMAL}      starts bash session inside running nginx container."
     echo "    ${BOLD}bash-postgres${NORMAL}   starts bash session inside running postgre container."
     echo "    ${BOLD}docker_delete_all${NORMAL} Warning! delete everything installed by docker(volumes,images,containers,networks) requires sudo password"
+    echo "    ${BOLD}npm-build${NORMAL}       runs \"npm run build\" inside frontend container, which bundles the production ready static files into the build folder which will be served by nginx"
     # echo
     # echo "    Both init and rebuild args can be followed with any number of extra args and options that should be appended to docker-compose build."
     # echo
@@ -147,7 +148,7 @@ init() {
     new_django_secret
 
     docker-compose -f docker-compose-prod.yaml run --rm backend ./init.sh
-
+    npm_build
     after_init_message
 }
 
